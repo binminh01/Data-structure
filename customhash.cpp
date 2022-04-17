@@ -1,5 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
 struct customhash {
     static uint64_t splitmix64(uint64_t x) {
         x += 11400714819323198485ULL;
