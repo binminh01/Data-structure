@@ -1,5 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
 struct segtree {
     int sz;
     vector<int> t;
