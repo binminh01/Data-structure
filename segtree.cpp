@@ -10,9 +10,9 @@ struct segtree {
             return;
         }
         int m = (lx + rx)/2;
-        build(a, 2*x + 1, lx, m);
-        build(a, 2*x + 2, m + 1, rx);
-        t[x] = merge(t[2*x + 1], t[2*x + 2]);
+        build(a, 2*x, lx, m);
+        build(a, 2*x + 1, m + 1, rx);
+        t[x] = merge(t[2*x], t[2*x + 1]);
     }
     void set(int i, int v, int x, int lx, int rx) {
         if (lx == rx) {
