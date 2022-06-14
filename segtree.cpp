@@ -33,7 +33,7 @@ struct segtree {
     }
     void build(const vector<T> &a) {build(a, 1, 1, n);}
     void set(int i, int v) {set(i, v, 1, 1, n);}
-    int get(int l, int r) {return get(l, r, 1, 1, n);}
+    T get(int l, int r) {return get(l, r, 1, 1, n);}
 };
 template<class T>
 struct segtree_lazy {
@@ -61,7 +61,7 @@ struct segtree_lazy {
         la[2*i]+=la[i], la[2*i + 1]+=la[i];
         la[i] = 0;
     }
-    void set(int l, int r, int x, int lx, int rx, int d) {
+    void set(int l, int r, int x, int lx, int rx, T d) {
         if (lx > r || rx < l) return;
         if (lx >= l && rx <= r) {t[x]+=d; la[x]+=d; return;}
         down(x);
@@ -70,11 +70,14 @@ struct segtree_lazy {
         set(l, r, 2*x + 1, m + 1, rx, d);
         t[x] = merge(t[2*x], t[2*x + 1]);
     }
-    int get(int l, int r, int x, int lx, int rx) {
+    T get(int l, int r, int x, int lx, int rx) {
         if (lx > r || rx < l) return neutral;
         if (lx >= l && rx <= r) return t[x];
         down(x);
         int m = (lx + rx)/2;
         return merge(get(l, r, 2*x, lx, m), get(l, r, 2*x + 1, m + 1, rx));
     }
+    void build(const vector<T> &a) {build(a, 1, 1, n);}
+    void set(int l, int r, T d) {set(i, v, 1, 1, n, d);}
+    T get(int l, int r) {return get(l, r, 1, 1, n);}
 };
