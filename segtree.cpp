@@ -1,10 +1,11 @@
+template<class T>
 struct segtree {
     int n;
-    vector<ll> t;
-    int neutral = 0;
-    int merge(int a, int b) {return a + b;}
-    void init(int N) {n = N; t.assign(4*n, 0ll);}
-    void build(vector<int> &a, int x, int lx, int rx) {
+    vector<T> t;
+    T neutral = 0;
+    T merge(T a, T b) {return a + b;}
+    void init(int N) {n = N; t.resize(4*n);}
+    void build(const vector<T> &a, int x, int lx, int rx) {
         if (lx == rx) {
             t[x] = a[lx];
             return;
@@ -14,7 +15,7 @@ struct segtree {
         build(a, 2*x + 1, m + 1, rx);
         t[x] = merge(t[2*x], t[2*x + 1]);
     }
-    void set(int i, int v, int x, int lx, int rx) {
+    void set(int i, T v, int x, int lx, int rx) {
         if (lx == rx) {
             t[x] = v;
             return;
@@ -24,25 +25,28 @@ struct segtree {
         else set(i, v, 2*x + 1, m + 1, rx);
         t[x] = merge(t[2*x], t[2*x + 1]);
     }
-    int get(int l, int r, int x, int lx, int rx) {
+    T get(int l, int r, int x, int lx, int rx) {
         if (lx > r || rx < l) return neutral;
         if (lx >= l && rx <= r) return t[x];
         int m = (lx + rx)/2;
         return merge(get(l, r, 2*x, lx, m), get(l, r, 2*x + 1, m + 1, rx));
     }
-    void build(vector<int> &a) {build(a, 1, 1, n);}
+    void build(const vector<T> &a) {build(a, 1, 1, n);}
     void set(int i, int v) {set(i, v, 1, 1, n);}
     int get(int l, int r) {return get(l, r, 1, 1, n);}
 };
+template<class T>
 struct segtree_lazy {
     int n;
-    vector<ll> t, la;
+    vector<T> t, la;
+    T neutral = 0;
+    T merge(T a, T b) {return a + b;}
     void init(int N) {
         n = N;
-        t.assign(4*n, 0ll);
-        la.assign(4*n, 0ll);
+        t.resize(4*n);
+        la.resize(4*n);
     }
-    void build(vector<int> &a, int x, int lx, int rx) {
+    void build(const vector<T> &a, int x, int lx, int rx) {
         if (lx == rx) {
             t[x] = a[lx];
             return;
@@ -50,7 +54,7 @@ struct segtree_lazy {
         int m = (lx + rx)/2;
         build(a, 2*x, lx, m);
         build(a, 2*x + 1, m + 1, rx);
-        t[x] = max(t[2*x], t[2*x + 1]);
+        t[x] = merge(t[2*x], t[2*x + 1]);
     }
     void down(int i) {
         t[2*i]+=la[i], t[2*i + 1]+=la[i];
@@ -64,13 +68,13 @@ struct segtree_lazy {
         int m = (lx + rx)/2;
         set(l, r, 2*x, lx, m, d);
         set(l, r, 2*x + 1, m + 1, rx, d);
-        t[x] = max(t[2*x], t[2*x + 1]);
+        t[x] = merge(t[2*x], t[2*x + 1]);
     }
     int get(int l, int r, int x, int lx, int rx) {
-        if (lx > r || rx < l) return 0;
+        if (lx > r || rx < l) return neutral;
         if (lx >= l && rx <= r) return t[x];
         down(x);
         int m = (lx + rx)/2;
-        return max(get(l, r, 2*x, lx, m), get(l, r, 2*x + 1, m + 1, rx));
+        return merge(get(l, r, 2*x, lx, m), get(l, r, 2*x + 1, m + 1, rx));
     }
 };
