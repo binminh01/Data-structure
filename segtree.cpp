@@ -1,6 +1,6 @@
 struct segtree {
     int n;
-    vector<int> t;
+    vector<ll> t;
     int neutral = 0;
     int merge(int a, int b) {return a + b;}
     void init(int N) {n = N; t.assign(4*n, 0ll);}
@@ -36,7 +36,7 @@ struct segtree {
 };
 struct segtree_lazy {
     int n;
-    vector<int> t, la;
+    vector<ll> t, la;
     void init(int N) {
         n = N;
         t.assign(4*n, 0ll);
