@@ -8,7 +8,7 @@ struct fraction {
         b/=c;
         if (b < 0) a = -a, b = -b;
     }
-    friend istream& operator>>(istream& in, fraction f) {in >> f.a >> f.b; return in;}
+    friend istream& operator>>(istream& in, fraction &f) {in >> f.a >> f.b; return in;}
     friend ostream& operator<<(ostream& out, fraction f) {out << f.a << '/' << f.b; return out;}
     bool operator==(fraction f) const {return a == f.a && b == f.b;}
     bool operator<(fraction f) const {return a*f.b < b*f.a;}
