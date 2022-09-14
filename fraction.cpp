@@ -20,9 +20,9 @@ struct fraction {
     fraction operator-(fraction f) const {return fraction(a*f.b - b*f.a, b*f.b);}
     fraction operator*(fraction f) const {return fraction(a*f.a, b*f.b);}
     fraction operator/(fraction f) const {return fraction(a*f.b, b*f.a);}
-    fraction operator+(int n) const {return fraction(a + b*n, b);}
-    fraction operator-(int n) const {return fraction(a - b*n, b);}
-    fraction operator*(int n) const {return fraction(a*n, b);}
-    fraction operator/(int n) const {return fraction(a, b*n);}
+    fraction operator+(T n) const {return fraction(a + b*n, b);}
+    fraction operator-(T n) const {return fraction(a - b*n, b);}
+    fraction operator*(T n) const {return fraction(a*n, b);}
+    fraction operator/(T n) const {return fraction(a, b*n);}
 };
 using F = fraction<int>;
