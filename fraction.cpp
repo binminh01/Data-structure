@@ -1,9 +1,10 @@
+template<class T>
 struct fraction {
-    int a, b;
-    fraction(int x, int y = 1) {
+    T a, b;
+    fraction(T x, T y = 1) {
         assert(y != 0);
         a = x; b = y;
-        int c = __gcd(abs(a), abs(b));
+        T c = __gcd(abs(a), abs(b));
         a/=c;
         b/=c;
         if (b < 0) a = -a, b = -b;
@@ -24,4 +25,4 @@ struct fraction {
     fraction operator*(int n) const {return fraction(a*n, b);}
     fraction operator/(int n) const {return fraction(a, b*n);}
 };
-using F = fraction;
+using F = fraction<int>;
