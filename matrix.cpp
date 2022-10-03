@@ -29,7 +29,7 @@ struct matrix {
         }
         return c;
     }
-    matrix pow(int k) {
+    matrix pow(ll k) {
         matrix x = single(n), b = a;
         for (; k; k>>=1, b = b*b) {
             if (k & 1) x = x*b;
