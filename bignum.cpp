@@ -17,6 +17,17 @@ struct bignum {
         os << a.s;
         return os;
     }
+    bool operator<(const bignum &a) const {
+        if (sz(s) < sz(a.s)) return 1;
+        if (sz(s) > sz(a.s)) return 0;
+        return s < a.s;
+    }
+    bool operator>(const bignum &a) const {
+        return !(s < a.s);
+    }
+    bool operator==(const bignum &a) {
+        return s == a.s;
+    }
     bignum operator+(const bignum &a) {
         string x = "";
         int l1 = s.size(), l2 = a.s.size();
