@@ -11,7 +11,7 @@ struct matrix {
         n = sz(a); m = sz(a[0]);
     }
     friend istream& operator>>(istream& in, matrix &b) {in >> b.a; return in;}
-    friend ostream& operator<<(ostream& out, matrix b) {out << b.a; return out;}
+    friend ostream& operator<<(ostream& out, const matrix &b) {out << b.a; return out;}
     static matrix single(int k) {
         matrix b(k, k);
         while (k--) b.a[k][k] = 1;
