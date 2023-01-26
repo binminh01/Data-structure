@@ -1,5 +1,5 @@
 template<class T>
-struct segtree_lazy {
+struct segtree_lazy_min {
     int n;
     vector<T> t, la;
     T neutral = 0;
