@@ -1,4 +1,4 @@
-struct DSU {
+struct dsu {
     vector<int> par, sz;
     void init(int n) {
         par.resize(n);
