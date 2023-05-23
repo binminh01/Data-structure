@@ -1,7 +1,7 @@
 template<class T>
 struct fraction {
     T a, b;
-    fraction(T x, T y = 1) {
+    fraction(T x = 0, T y = 1) {
         assert(y != 0);
         a = x; b = y;
         T c = __gcd(abs(a), abs(b));
