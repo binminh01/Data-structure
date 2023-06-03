@@ -9,6 +9,9 @@ struct bignum {
     bignum(int a) {
         s = to_string(a);
     }
+    bignum(ll a) {
+        s = to_string(a);
+    }
     friend istream &operator>>(istream &is, bignum &a) {
         is >> a.s;
         return is;
@@ -23,41 +26,49 @@ struct bignum {
         return s < a.s;
     }
     bool operator>(const bignum &a) const {
-        return !(s < a.s);
+        if (sz(s) > sz(a.s)) return 1;
+        if (sz(s) < sz(a.s)) return 0;
+        return s > a.s;
     }
     bool operator==(const bignum &a) {
         return s == a.s;
     }
-    bool operator>=(const bignum &a) {
-        return s == a.s || s > a.s;
-    }
     bool operator<=(const bignum &a) {
-        return s == a.s || s < a.s;
+        if (sz(s) < sz(a.s)) return 1;
+        if (sz(s) > sz(a.s)) return 0;
+        return s <= a.s;
+    }
+    bool operator>=(const bignum &a) {
+        if (sz(s) > sz(a.s)) return 1;
+        if (sz(s) < sz(a.s)) return 0;
+        return s >= a.s;
     }
     bignum operator+(const bignum &a) {
         string x = "";
         int m = s.size(), n = a.s.size();
-        int d = n - m, c = 0;
+        int d = abs(m - n), c = 0;
         for (int i = min(m, n) - 1; i >= 0; i--) {
-            int sum = ((s[i] - '0') + (a.s[i + d] - '0') + c);
-            x.push_back(sum % 10 + '0');
+            int sum = c;
+            if (m < n) sum+=s[i] - '0' + a.s[i + d] - '0';
+            else sum+=s[i + d] - '0' + a.s[i] - '0';
+            x+=sum % 10 + '0';
             c = sum/10;
         }
         if (m < n) {
             for (int i = n - m - 1; i >= 0; i--) {
                 int sum = ((a.s[i] - '0') + c);
-                x.push_back(sum % 10 + '0');
+                x+=sum % 10 + '0';
                 c = sum/10;
             }
         } else {
             for (int i = m - n - 1; i >= 0; i--) {
                 int sum = ((s[i] - '0') + c);
-                x.push_back(sum % 10 + '0');
+                x+=sum % 10 + '0';
                 c = sum/10;
             }
         }
-        if (c) x.push_back(c + '0');
-        while (sz(x) > 1 && x.back() == '0') x.pop_back();
+        if (c) x+=c + '0';
+        while (x.size() > 1 && x.back() == '0') x.pop_back();
         reverse(x.begin(), x.end());
         return bignum(x);
     }
@@ -71,32 +82,37 @@ struct bignum {
                 sub = sub + 10;
                 c = 1;
             } else c = 0;
-            x.push_back(sub + '0');
+            x+=sub + '0';
         }
         for (int i = m - n - 1; i >= 0; i--) {
             if (s[i] == '0' && c) {
-                x.push_back('9');
+                x+='9';
                 continue;
             }
             int sub = ((s[i] - '0') - c);
-            if (i > 0 || sub > 0) x.push_back(sub + '0');
+            if (i > 0 || sub > 0) x+=sub + '0';
             c = 0;
         }
-        while (sz(x) > 1 && x.back() == '0') x.pop_back();
+        while (x.size() > 1 && x.back() == '0') x.pop_back();
         reverse(x.begin(), x.end());
         return bignum(x);
     }
     bignum operator*(const bignum &a) {
-        if (s == "0" || a.s == "0") return bignum(0);
-        string x = "";
-        int m = s.size() - 1, n = a.s.size() - 1, c = 0;
-        for (int i = 0; i <= m + n; i++) {
-            for (int j = max(0, i - n); j <= min(i, m); j++) {
-                c+=(s[m - j] - '0')*(a.s[n - i + j] - '0');
+        int m = s.size(), n = a.s.size();
+        string x(m + n, '0');
+        int p = 0;
+        for (int i = m - 1; i >= 0; i--) {
+            int c = 0, q = 0;
+            for (int j = n - 1; j >= 0; j--) {
+                int sum = (s[i] - '0')*(a.s[j] - '0') + x[p + q] - '0' + c;
+                x[p + q] = sum % 10 + '0';
+                c = sum/10;
+                q++;
             }
-            x+=c % 10 + '0';
-            c/=10;
+            if (c > 0) x[p + q]+=c;
+            p++;
         }
+        while (x.size() > 1 && x.back() == '0') x.pop_back();
         reverse(x.begin(), x.end());
         return bignum(x);
     }
