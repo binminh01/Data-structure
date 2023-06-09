@@ -33,6 +33,9 @@ struct bignum {
     bool operator==(const bignum &a) {
         return s == a.s;
     }
+    bool operator!=(const bignum &a) {
+        return s != a.s;
+    }
     bool operator<=(const bignum &a) {
         if (sz(s) < sz(a.s)) return 1;
         if (sz(s) > sz(a.s)) return 0;
